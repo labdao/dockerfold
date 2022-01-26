@@ -1,5 +1,5 @@
 # FROM ubuntu:focal
-FROM nvidia/cuda:11.6.0-base-ubuntu20.04
+FROM nvidia/cuda:11.6.0-devel-ubuntu20.04
 
 # installing packages required for installation
 RUN echo "downloading basic packages for installation"
