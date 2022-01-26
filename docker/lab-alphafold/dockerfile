@@ -5,6 +5,7 @@ FROM nvidia/cuda:11.6.0-base-ubuntu20.04
 RUN echo "downloading basic packages for installation"
 RUN apt-get update
 RUN apt-get install -y tmux wget curl git
+RUN apt-get install libstdc++6
 
 # checking installation of tools
 RUN gcc --version
