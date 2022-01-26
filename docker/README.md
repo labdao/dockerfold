@@ -4,5 +4,5 @@
 * run the command below 
 
 ```
-docker build docker -t yourdockeraccount/lab-alphafold:clean
+docker build docker/lab-alphafold -t yourdockeraccount/lab-alphafold:clean
 ```
