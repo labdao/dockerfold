@@ -5,16 +5,15 @@ RUN echo "downloading basic packages for installation"
 RUN apt-get update
 RUN apt-get install -y tmux wget curl git
 
-# download instructions from YoshitakaMo localcolabfold work
-# RUN echo "downloading instructions and starting install"
-# RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabfold_linux.sh
-
 # clone git repository
 RUN git clone https://github.com/awesome-bio/lab-alphafold.git
 
+# download instructions from YoshitakaMo localcolabfold work
+RUN echo "downloading instructions and starting install"
+RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabfold_linux.sh
+
 # install colabfold
 # RUN cd lab-alphafold
-RUN chmod 777 install_colabfold_linux.sh
 RUN bash install_colabfold_linux.sh
 
 # complete installation
