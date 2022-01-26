@@ -2,16 +2,16 @@
 a dockerized alphafold v2 implementation based on collabfold
 
 ## directory structure
-* data - contains sample information that is processed by the model, new information is consumed via the data/raw directory, results are stored in the data/processed directory
 
+```
 ├── LICENSE
 ├── Makefile           <- Makefile with commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
 ├── data
 │   ├── external       <- Data from third party sources
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump. Data in this directory is incomplete due to size constraints.
+│   ├── interim        <- Intermediate data that has been transformed
+│   ├── processed      <- Output information, to be sent back to the client
+│   └── raw            <- Input information, to be processed
 │
 ├── collabfold         <- Trained models, including MOFA models and UMAP clustering results
 │
@@ -32,3 +32,5 @@ a dockerized alphafold v2 implementation based on collabfold
 │   └── visualization  <- Scripts to create exploratory visualizations (only works with raw data access)
 │
 └── docker            <- dockerfiles
+```
+
