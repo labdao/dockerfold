@@ -1,6 +1,9 @@
 # lab-alphafold
 a dockerized alphafold v2 implementation based on collabfold
 
+## AWS
+AMI ID: ami-00339339e800db52e
+
 ## directory structure
 
 ```
