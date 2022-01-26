@@ -2,13 +2,19 @@ FROM ubuntu:focal
 
 # installing packages required for installation
 RUN echo "downloading basic packages for installation"
-RUN mkdir app
 RUN apt-get update
 RUN apt-get install -y tmux wget curl git
 
-# download instructions
-RUN echo "downloading instructions and starting install"
-RUN cd app
-RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabfold_linux.sh
+# download instructions from YoshitakaMo localcolabfold work
+# RUN echo "downloading instructions and starting install"
+# RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabfold_linux.sh
+
+# clone git repository
+RUN git clone https://github.com/awesome-bio/lab-alphafold.git
+
+# install colabfold
+RUN cd lab-alphafold
 RUN bash install_colabfold_linux.sh
+
+# complete installation
 
