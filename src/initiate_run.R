@@ -24,6 +24,7 @@ input <-input %>% mutate(fasta_in = str_remove_all(input$sequence, "[BJOUXZ]")) 
 
 # writing fasta file
 input %>% 
+  mutate(sequence = if_else(sequence == "ANON", paste0(sequence, "_", pad), sequence)) %>%
   mutate(fasta = purrr::map2(sequence, padded_out, ~ write.fasta(.y, .x, 
                                                      here::here(paste0("data/interim/", .x, ".fasta")), 
                                                      open = "w", nbchar = 1000, as.string = FALSE)))

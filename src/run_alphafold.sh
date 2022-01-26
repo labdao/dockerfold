@@ -1,7 +1,7 @@
 cd /home/ubuntu/colabfold
 for filename in /home/ubuntu/colabfold/fasta/*.fasta; do
     [ -e "$filename" ] || continue
-    var=basename $filename .fasta
+    var=$(basename $filename .fasta)
     echo $var
     echo $filename
     /home/ubuntu/colabfold/colabfold-conda/bin/python3.7 /home/ubuntu/colabfold/runner_af2advanced.py \
