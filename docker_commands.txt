@@ -1,0 +1,6 @@
+docker pull ubuntu:latest
+docker run -d -t -v /Users/rindtorf/github/apollo:/home/apollo niklastr/ubuntu
+
+
+#witin shell
+apt-get updat
