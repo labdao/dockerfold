@@ -24,3 +24,6 @@ RUN bash install_colabbatch_linux.sh
 
 # complete installation
 export PATH="/colabfold_batch/bin:$PATH"
+
+# install helpers
+RUN apt-get install -y nano
