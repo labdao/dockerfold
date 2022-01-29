@@ -23,4 +23,4 @@ RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/insta
 RUN bash install_colabbatch_linux.sh
 
 # complete installation
-
+export PATH="/colabfold_batch/bin:$PATH"
