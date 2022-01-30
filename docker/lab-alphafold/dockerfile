@@ -26,12 +26,9 @@ RUN git clone https://github.com/awesome-bio/lab-alphafold.git
 RUN type wget || { echo "wget command is not installed. Please install it at first using apt or yum." ; exit 1 ; }
 RUN type curl || { echo "curl command is not installed. Please install it at first using apt or yum. " ; exit 1 ; }
 
-# listing variable
-ARG CURRENTPATH
-ARG COLABFOLDDIR
 # defining variable
-LABEL CURRENTPATH=`pwd`
-LABEL COLABFOLDDIR="${CURRENTPATH}/colabfold_batch"
+ARG CURRENTPATH=`pwd`
+ARG COLABFOLDDIR="${CURRENTPATH}/colabfold_batch"
 
 RUN mkdir -p ${COLABFOLDDIR}
 RUN cd ${COLABFOLDDIR}
@@ -42,7 +39,9 @@ RUN rm Miniconda3-latest-Linux-x86_64.sh
 RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
 RUN export PATH="${COLABFOLDDIR}/conda/condabin:${PATH}"
 RUN conda create -p $COLABFOLDDIR/colabfold-conda python=3.7 -y
-RUN conda activate $COLABFOLDDIR/colabfold-conda
+# Switch to the new environment:
+SHELL ["conda", "run", "-n", "colabfold-conda", "/bin/bash", "-c"]
+#RUN conda activate $COLABFOLDDIR/colabfold-conda
 RUN conda update -n base conda -y
 RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 openmm==7.5.1 pdbfixer -y
 # patch to openmm
