@@ -15,12 +15,33 @@ RUN nvcc --version
 RUN git clone https://github.com/awesome-bio/lab-alphafold.git
 
 # download instructions from YoshitakaMo localcolabfold work
-RUN echo "downloading instructions and starting install"
-RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabbatch_linux.sh
+# RUN echo "downloading instructions and starting install"
+# RUN wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabbatch_linux.sh
 
+#####################
 # install colabfold
 # RUN cd lab-alphafold
-RUN bash install_colabbatch_linux.sh
+# RUN bash install_colabbatch_linux.sh
+# manually running installation in docker
+RUN type wget || { echo "wget command is not installed. Please install it at first using apt or yum." ; exit 1 ; }
+RUN type curl || { echo "curl command is not installed. Please install it at first using apt or yum. " ; exit 1 ; }
+
+RUN CURRENTPATH=`pwd`
+RUN COLABFOLDDIR="${CURRENTPATH}/colabfold_batch"
+
+RUN mkdir -p ${COLABFOLDDIR}
+RUN cd ${COLABFOLDDIR}
+RUN wget https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64735c4941278d92b554ec94415f8/modules/mol/alg/src/stereo_chemical_props.txt --no-check-certificate
+RUN wget -q -P . https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b -p ${COLABFOLDDIR}/conda
+RUN rm Miniconda3-latest-Linux-x86_64.sh
+RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
+RUN export PATH="${COLABFOLDDIR}/conda/condabin:${PATH}"
+RUN conda create -p $COLABFOLDDIR/colabfold-conda python=3.7 -y
+RUN conda activate $COLABFOLDDIR/colabfold-conda
+RUN conda update -n base conda -y
+RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 openmm==7.5.1 pdbfixer -y
+
 
 # complete installation
 export PATH="/colabfold_batch/bin:$PATH"
