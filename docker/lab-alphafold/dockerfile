@@ -44,7 +44,7 @@ RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 
 
 
 # complete installation
-export PATH="/colabfold_batch/bin:$PATH"
+RUN export PATH="/colabfold_batch/bin:$PATH"
 
 # install helpers
 RUN apt-get install -y nano
