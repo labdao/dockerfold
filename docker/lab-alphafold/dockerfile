@@ -59,27 +59,16 @@ RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install htt
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 # # bin directory to run
-# mkdir -p $COLABFOLDDIR/bin
-# cd $COLABFOLDDIR/bin
-# cat << EOF > colabfold_batch
-# #!/bin/sh
-# export TF_FORCE_UNIFIED_MEMORY="1"
-# export XLA_PYTHON_CLIENT_MEM_FRACTION="4.0"
-# export COLABFOLDDIR=$COLABFOLDDIR
-# export XDG_CACHE_HOME="\${COLABFOLDDIR}"
-# export PATH="\${COLABFOLDDIR}/colabfold-conda/bin:\$PATH"
-# \$COLABFOLDDIR/colabfold-conda/bin/colabfold_batch \$@
-# EOF
-# chmod +x colabfold_batch
+RUN mkdir -p /colabfold_batch/bin
+RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
+RUN chmod +x /colabfold_batch/bin/colabfold_batch
 
 # # hack to share the parameter files in a workstation.
-# cd ${COLABFOLDDIR}/colabfold-conda/lib/python3.7/site-packages/colabfold
-# sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"${COLABFOLDDIR}/stereo_chemical_props.txt\"#" batch.py
-# cd ${COLABFOLDDIR}/colabfold-conda/lib/python3.7/site-packages/alphafold/relax
-# sed -i -e 's/CPU/CUDA/g' amber_minimize.py
+#RUN (cd /colabfold_batch/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
+#RUN (cd /colabfold_batch/colabfold-conda/lib/python3.7/site-packages/alphafold/relax; sed -i -e 's/CPU/CUDA/g' amber_minimize.py)
 
 # # complete installation
 ENV PATH="/colabfold_batch/bin:$PATH"
 
 # # install helpers
-RUN apt-get install -y nano
+# RUN apt-get install -y nano
