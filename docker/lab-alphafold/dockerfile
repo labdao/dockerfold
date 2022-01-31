@@ -58,16 +58,16 @@ RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install "co
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
+# hack to share the parameter files in a workstation.
+RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
+RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/alphafold/relax; sed -i -e 's/CPU/CUDA/g' amber_minimize.py)
+
 # bin directory to run with cachebust
 ARG CACHEBUST=2
 RUN (cd /lab-alphafold; git pull) 
 RUN mkdir -p /colabfold_batch/bin
 RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
 RUN chmod +x /colabfold_batch/bin/colabfold_batch
-
-# hack to share the parameter files in a workstation.
-RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
-RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/alphafold/relax; sed -i -e 's/CPU/CUDA/g' amber_minimize.py)
 
 # # complete installation
 ENV PATH="/colabfold_batch/bin:$PATH"
