@@ -59,10 +59,10 @@ RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install htt
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 # # bin directory to run
-RUN mkdir -p /colabfold_batch/bin
 RUN (cd /lab-alphafold; git pull) 
-#RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
-#RUN chmod +x /colabfold_batch/bin/colabfold_batch
+RUN mkdir -p /colabfold_batch/bin
+RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
+RUN chmod +x /colabfold_batch/bin/colabfold_batch
 
 # # hack to share the parameter files in a workstation.
 #RUN (cd /colabfold_batch/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
