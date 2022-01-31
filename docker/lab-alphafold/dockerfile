@@ -27,8 +27,7 @@ RUN type wget || { echo "wget command is not installed. Please install it at fir
 RUN type curl || { echo "curl command is not installed. Please install it at first using apt or yum. " ; exit 1 ; }
 
 # defining variable
-ARG CURRENTPATH=`pwd`
-ARG COLABFOLDDIR="${CURRENTPATH}/colabfold_batch"
+ARG COLABFOLDDIR="/colabfold_batch"
 
 RUN mkdir -p ${COLABFOLDDIR}
 RUN cd ${COLABFOLDDIR}
@@ -36,31 +35,30 @@ RUN wget https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64
 RUN wget -q -P . https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b -p ${COLABFOLDDIR}/conda
 RUN rm Miniconda3-latest-Linux-x86_64.sh
-#RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
-RUN export PATH="${COLABFOLDDIR}/conda/condabin:${PATH}"
-RUN conda create -p $COLABFOLDDIR/colabfold-conda python=3.7 -y
+RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
+ENV PATH="${COLABFOLDDIR}/conda/condabin:${PATH}"
+RUN conda create --name colabfold-conda python=3.7 -y
 # Switch to the new environment:
-SHELL ["conda", "run", "-n", "colabfold-conda", "/bin/bash", "-c"]
-#RUN conda activate $COLABFOLDDIR/colabfold-conda
+SHELL ["conda", "run", "-n", "colabfold-conda", "/bin/bash", "-c"] 
 RUN conda update -n base conda -y
 RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 openmm==7.5.1 pdbfixer -y
-# patch to openmm
+# # patch to openmm
 RUN wget -qnc https://raw.githubusercontent.com/deepmind/alphafold/main/docker/openmm.patch --no-check-certificate
-RUN (cd ${COLABFOLDDIR}/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < ${COLABFOLDDIR}/openmm.patch)
+RUN (cd ${COLABFOLDDIR}/conda/envs/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < ${COLABFOLDDIR}/openmm.patch)
 RUN rm openmm.patch
-# Download the updater
+# # Download the updater
 RUN wget -qnc https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/update_linux.sh --no-check-certificate
 RUN chmod +x update_linux.sh
-# install alignment tools
+# # install alignment tools
 RUN conda install -c conda-forge -c bioconda kalign3=3.2.2 hhsuite=3.3.0 -y
-# install ColabFold and Jaxlib
-RUN colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
-RUN colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
-RUN colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
+# # install ColabFold and Jaxlib
+RUN ${COLABFOLDDIR}/conda/envs/colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
+# RUN colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
+# RUN colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 
-# complete installation
-RUN export PATH="/colabfold_batch/bin:$PATH"
+# # complete installation
+# RUN export PATH="/colabfold_batch/bin:$PATH"
 
-# install helpers
-RUN apt-get install -y nano
+# # install helpers
+# RUN apt-get install -y nano
