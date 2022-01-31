@@ -54,13 +54,13 @@ RUN chmod +x update_linux.sh
 # install alignment tools
 RUN conda install -c conda-forge -c bioconda kalign3=3.2.2 hhsuite=3.3.0 -y
 # # install ColabFold and Jaxlib
-# RUN ${COLABFOLDDIR}/conda/envs/colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
-# RUN ${COLABFOLDDIR}/conda/envs/colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
-# RUN ${COLABFOLDDIR}/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
+RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
+RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
+RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 
 # # complete installation
-# RUN export PATH="/colabfold_batch/bin:$PATH"
+ENV PATH="/colabfold_batch/bin:$PATH"
 
 # # install helpers
-# RUN apt-get install -y nano
+RUN apt-get install -y nano
