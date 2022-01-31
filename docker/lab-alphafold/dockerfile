@@ -36,7 +36,7 @@ RUN wget https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64
 RUN wget -q -P . https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b -p ${COLABFOLDDIR}/conda
 RUN rm Miniconda3-latest-Linux-x86_64.sh
-RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
+#RUN . "${COLABFOLDDIR}/conda/etc/profile.d/conda.sh"
 RUN export PATH="${COLABFOLDDIR}/conda/condabin:${PATH}"
 RUN conda create -p $COLABFOLDDIR/colabfold-conda python=3.7 -y
 # Switch to the new environment:
