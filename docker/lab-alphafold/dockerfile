@@ -44,7 +44,8 @@ RUN conda update -n base conda -y
 RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 openmm==7.5.1 pdbfixer -y
 # patch to openmm
 RUN wget -qnc https://raw.githubusercontent.com/deepmind/alphafold/main/docker/openmm.patch --no-check-certificate
-RUN (cd ${COLABFOLDDIR}/conda/envs/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < ${COLABFOLDDIR}/openmm.patch)
+RUN (cd ${COLABFOLDDIR}/conda/envs/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < openmm.patch)
+RUN mv stereo_chemical_props.txt {COLABFOLDDIR}
 RUN rm openmm.patch
 # Download the updater
 RUN wget -qnc https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/update_linux.sh --no-check-certificate
