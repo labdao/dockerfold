@@ -59,8 +59,8 @@ RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install htt
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 # bin directory to run
-RUN (cd /lab-alphafold; git pull) 
 RUN mkdir -p /colabfold_batch/bin
+RUN (cd /lab-alphafold; git pull) 
 RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
 RUN chmod +x /colabfold_batch/bin/colabfold_batch
 
