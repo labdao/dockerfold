@@ -59,7 +59,7 @@ RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install htt
 RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 # bin directory to run with cachebust
-ARG CACHEBUST=1 
+ARG CACHEBUST=2
 RUN (cd /lab-alphafold; git pull) 
 RUN mkdir -p /colabfold_batch/bin
 RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
