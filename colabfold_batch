@@ -1,7 +1,7 @@
 #!/bin/sh
 export TF_FORCE_UNIFIED_MEMORY="1"
 export XLA_PYTHON_CLIENT_MEM_FRACTION="4.0"
-export COLABFOLDDIR=
-export XDG_CACHE_HOME="${COLABFOLDDIR}"
-export PATH="${COLABFOLDDIR}/colabfold-conda/bin:$PATH"
-$COLABFOLDDIR/colabfold-conda/bin/colabfold_batch $@
+export COLABFOLDDIR=/colabfold_batch
+export XDG_CACHE_HOME=/colabfold_batch
+export PATH="/colabfold_batch/colabfold-conda/bin:$PATH"
+/colabfold_batch/colabfold-conda/bin/colabfold_batch $@

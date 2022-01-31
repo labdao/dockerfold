@@ -72,4 +72,4 @@ RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/
 ENV PATH="/colabfold_batch/bin:$PATH"
 
 # # install helpers
-# RUN apt-get install -y nano
+RUN apt-get install -y nano
