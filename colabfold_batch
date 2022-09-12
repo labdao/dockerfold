@@ -3,6 +3,6 @@ export TF_FORCE_UNIFIED_MEMORY="1"
 export XLA_PYTHON_CLIENT_MEM_FRACTION="4.0"
 export COLABFOLDDIR=/colabfold_batch
 export XDG_CACHE_HOME=/colabfold_batch
-export PATH="colabfold_batch/conda/envs/colabfold-conda/bin:$PATH"
-/colabfold_batch/conda/envs/colabfold-conda/bin/colabfold_batch $@
+export PATH="src/conda/envs/colabfold-conda/bin:$PATH"
+/src/conda/envs/colabfold-conda/bin/colabfold_batch $@
 
