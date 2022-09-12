@@ -1,8 +1,6 @@
 # colabfold
 a dockerized alphafold v2 implementation based on colabfold
 
-## AWS
-AMI ID: ami-00339339e800db52e
 
 ## directory structure
 
