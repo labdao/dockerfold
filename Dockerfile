@@ -27,7 +27,7 @@ RUN type wget || { echo "wget command is not installed. Please install it at fir
 RUN type curl || { echo "curl command is not installed. Please install it at first using apt or yum. " ; exit 1 ; }
 
 # defining variable, do not change
-ARG COLABFOLDDIR="/colabfold_batch"
+ARG COLABFOLDDIR="/src"
 
 RUN mkdir -p ${COLABFOLDDIR}
 RUN cd ${COLABFOLDDIR}
@@ -45,7 +45,7 @@ RUN conda install -c conda-forge python=3.7 cudnn==8.2.1.32 cudatoolkit==11.1.1 
 # patch to openmm
 RUN wget -qnc https://raw.githubusercontent.com/deepmind/alphafold/main/docker/openmm.patch --no-check-certificate
 RUN wc /openmm.patch
-RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < /openmm.patch)
+RUN (cd /src/conda/envs/colabfold-conda/lib/python3.7/site-packages; patch -s -p0 < /openmm.patch)
 RUN mv /stereo_chemical_props.txt /colabfold_batch
 RUN rm openmm.patch
 # Download the updater
@@ -54,20 +54,20 @@ RUN chmod +x update_linux.sh
 # install alignment tools
 RUN conda install -c conda-forge -c bioconda kalign3=3.2.2 hhsuite=3.3.0 -y
 # install ColabFold and Jaxlib
-RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
-RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
-RUN /colabfold_batch/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
+RUN /src/conda/envs/colabfold-conda/bin/python3.7 -m pip install "colabfold[alphafold] @ git+https://github.com/sokrypton/ColabFold"
+RUN /src/conda/envs/colabfold-conda/bin/python3.7 -m pip install https://storage.googleapis.com/jax-releases/cuda111/jaxlib-0.1.72+cuda111-cp37-none-manylinux2010_x86_64.whl
+RUN /src/conda/envs/colabfold-conda/bin/python3.7 -m pip install jax==0.2.25
 
 # hack to share the parameter files in a workstation.
-RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
-RUN (cd /colabfold_batch/conda/envs/colabfold-conda/lib/python3.7/site-packages/alphafold/relax; sed -i -e 's/CPU/CUDA/g' amber_minimize.py)
+RUN (cd /src/conda/envs/colabfold-conda/lib/python3.7/site-packages/colabfold; sed -i -e "s#props_path = \"stereo_chemical_props.txt\"#props_path = \"/colabfold_batch/stereo_chemical_props.txt\"#" batch.py)
+RUN (cd /src/conda/envs/colabfold-conda/lib/python3.7/site-packages/alphafold/relax; sed -i -e 's/CPU/CUDA/g' amber_minimize.py)
 
 # bin directory to run with cachebust
 ARG CACHEBUST=2
 RUN (cd /lab-alphafold; git pull) 
-RUN mkdir -p /colabfold_batch/bin
-RUN mv /lab-alphafold/colabfold_batch /colabfold_batch/bin/colabfold_batch
-RUN chmod +x /colabfold_batch/bin/colabfold_batch
+RUN mkdir -p /src/bin
+RUN mv /lab-alphafold/colabfold_batch /src/bin/colabfold_batch
+RUN chmod +x /src/bin/colabfold_batch
 
 # # complete installation
-ENV PATH="/colabfold_batch/bin:$PATH"
+ENV PATH="/src/bin:$PATH"
